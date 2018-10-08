@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<section id="archive">
+<p>Loading archive...</p>
+</section>
+<div id="data" hidden>
+
+</div>
+<script>
+window.addEventListener("load",function (){
+  var parts = location.href.slice(location.href.lastIndexOf("archive/")+ 8).split("/");
+  var searchType = (parts[0] === "tag" ? "tag" : (parts[0] === "category" ? "category" : (parts[2] ? "day" : (parts[1] === "month" ? "year" : ))))
+})
+</script>
