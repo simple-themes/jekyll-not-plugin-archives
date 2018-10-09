@@ -5,11 +5,32 @@ layout: default
 <p>Loading archive...</p>
 </section>
 <div id="data" hidden>
-
+{% for post in site.posts %}
+  <div class="result" data-url="{{ post.url | relative_url }}" data-title="{{ post.title }}" data-author="{{ post.author }}" data-date="{{ page.date | date_to_xmlschema }}">
+    <p class="excerpt">{{ post.excerpt }}</p>
+    <p class="tags">{% for c in post.tags %}{{ c }} {% endfor %}</p>
+    <p class="categories">{% for c in post.categories %}{{ c }} {% endfor %}</p>
+  </div>
+  {% endfor %}
 </div>
 <script>
 window.addEventListener("load",function (){
-  var parts = location.href.slice(location.href.lastIndexOf("archive/")+ 8).split("/");
-  var searchType = (parts[0] === "tag" ? "tag" : (parts[0] === "category" ? "category" : (parts[2] ? "day" : (parts[1] === "month" ? "year" : ))))
+  var parts = location.href.slice(location.href.lastIndexOf("archive/")+ 9).split("/");
+  var searchType = (parts[0] === "tag" ? "tag" : (parts[0] === "category" ? "category" : (parts[0] === "author" ? "author" : "date")));
+  history.replaceState({}, "", "/archive/" + parts.join("/"));
+  if(searchType === "tag"){
+    document.title = "Posts tagged " + parts[1] + " | {{ site.title }}";
+  }else if(searchType === "category"){
+    document.title = "Posts in the " + parts[1] + " category | {{ site.title }}";
+  }else if(searchType === "author"){
+    document.title = "Posts written by " + parts[1] + " | {{ site.title }}";
+  }{
+    document.title = "Posts written on " + parts.join("/") + " | {{ site.title }}";
+  };
+  var data = [];
+  var div = document.getElementById("data").children;
+  for(var i = 0;i < div.length, i++){
+    if(searchType === "tag" && div[i].getElementByClassName("tags").innerHTML.indexOf(parts[1]) > -1){data.push()};
+  };
 })
 </script>
